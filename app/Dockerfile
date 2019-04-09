@@ -4,21 +4,15 @@ FROM php:5.6-apache
 # 3.6.5 - from doc
 # 3.8.4 - Last
 ENV XL_VERSION 3.6.5
-ENV PHP_EXCEL Excel-1.0.2-PHP5
+#ENV PHP_EXCEL Excel-1.0.2-PHP5
 ENV XDEBUG_VERSION 2.2.7
-
-ENV PKG_DEPS $PHPIZE_DEPS libxml2-dev libldap2-dev \
-    libcurl4-nss-dev libgmp-dev libmhash-dev \
-    zlib1g-dev libssl-dev libssh2-1-dev
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         wget \
         git \
         curl \
-        re2c \
         libssh2-1 \
-        file \
         libpng16-16 \
         libmcrypt-dev \
         libpng-dev \
@@ -27,6 +21,11 @@ RUN apt-get update \
 
 RUN apt-get update \
         && cd /tmp \
+#        && export PHP_EXCEL="Excel-1.0.2-PHP5" \
+        && export PHP_EXCEL="master" \
+        && export  PKG_DEPS="$PHPIZE_DEPS libxml2-dev libldap2-dev \
+            libcurl4-nss-dev libgmp-dev libmhash-dev \
+            zlib1g-dev libssl-dev libssh2-1-dev" \
         && apt-get install -y --no-install-recommends $PKG_DEPS \
         && wget -q http://libxl.com/download/libxl-lin-$XL_VERSION.tar.gz \
         && tar xfz libxl-lin-$XL_VERSION.tar.gz \
@@ -35,6 +34,7 @@ RUN apt-get update \
         && mkdir php_excel \
         && wget -q https://github.com/Jan-E/php_excel/archive/$PHP_EXCEL.tar.gz \
         && tar -xf $PHP_EXCEL.tar.gz -C php_excel --strip-components=1 \
+        && unset PHP_EXCEL && unset XL_VERSION && unset PKG_DEPS \
         && cd php_excel \
         && phpize \
         && ./configure \
@@ -69,6 +69,7 @@ RUN apt-get update \
         && docker-php-ext-install pdo_mysql pdo_pgsql mysqli mysql pgsql \
         && pecl install ssh2 \
         && pecl install xdebug-$XDEBUG_VERSION \
+        && unset XDEBUG_VERSION \
         && pecl install -o -f redis \
         && docker-php-ext-enable ssh2 \
         && docker-php-ext-enable xdebug \
@@ -80,12 +81,6 @@ RUN apt-get update \
         && rm -rf /tmp/* /var/lib/apt/lists/*
 
 RUN mkdir -p /var/www/html /var/www/html/static /var/www/html/media
-
-RUN unset PHP_MD5 \
-    && unset PHPIZE_DEPS \
-    && unset PHP_CPPFLAGS \
-    && unset XL_VERSION \
-    && unset PKG_DEPS
 
 COPY php.ini /usr/local/etc/php/conf.d/99-setting.ini
 
