@@ -50,8 +50,8 @@ RUN apt-get update \
         && docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd \
         && docker-php-ext-configure mysql --with-mysql=mysqlnd \
         && docker-php-ext-configure mysqli --with-mysqli=mysqlnd \
-        && docker-php-ext-configure gmp \
-        && docker-php-ext-install curl \
+        && docker-php-ext-install \
+            curl \
             ldap \
             soap \
             sysvmsg \
@@ -66,7 +66,11 @@ RUN apt-get update \
             sockets \
             wddx \
             gettext \
-        && docker-php-ext-install pdo_mysql pdo_pgsql mysqli mysql pgsql \
+            pdo_mysql \
+            pdo_pgsql \
+            mysqli \
+            mysql \
+            pgsql \
         && pecl install ssh2 \
         && pecl install xdebug-$XDEBUG_VERSION \
         && unset XDEBUG_VERSION \
