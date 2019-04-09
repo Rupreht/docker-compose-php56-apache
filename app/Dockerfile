@@ -3,9 +3,7 @@ FROM php:5.6-apache
 
 # 3.6.5 - from doc
 # 3.8.4 - Last
-ENV XL_VERSION 3.6.5
-#ENV PHP_EXCEL Excel-1.0.2-PHP5
-ENV XDEBUG_VERSION 2.2.7
+# ENV XL_VERSION 3.6.5
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -23,7 +21,9 @@ RUN apt-get update \
         && cd /tmp \
 #        && export PHP_EXCEL="Excel-1.0.2-PHP5" \
         && export PHP_EXCEL="master" \
-        && export  PKG_DEPS="$PHPIZE_DEPS libxml2-dev libldap2-dev \
+        && export XDEBUG_VERSION="2.2.7" \
+        && export XL_VERSION="3.6.5" \
+        && export PKG_DEPS="$PHPIZE_DEPS libxml2-dev libldap2-dev \
             libcurl4-nss-dev libgmp-dev libmhash-dev \
             zlib1g-dev libssl-dev libssh2-1-dev" \
         && apt-get install -y --no-install-recommends $PKG_DEPS \
