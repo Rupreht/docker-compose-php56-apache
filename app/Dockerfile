@@ -128,11 +128,9 @@ COPY php.ini /usr/local/etc/php/conf.d/99-setting.ini
 
 COPY excel.ini /usr/local/etc/php/conf.d/99-excel.ini
 
-COPY phpinfo.php /var/www/html/phpinfo.php
+COPY phpinfo.php /var/www/html/index.php
 
 WORKDIR /var/www/html
-
-RUN php -m
 
 EXPOSE 80
 
