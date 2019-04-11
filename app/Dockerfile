@@ -18,6 +18,7 @@ RUN apt-get update \
         libib-util \
         bzip2 \
         imagemagick \
+        libc-client-dev libxslt1-dev \
     && rm -rf /var/lib/apt/lists/*
 
 RUN apt-get update \
@@ -30,8 +31,7 @@ RUN apt-get update \
             libcurl4-nss-dev libgmp-dev libmhash-dev \
             zlib1g-dev libssl-dev libssh2-1-dev firebird-dev \
             libbz2-dev libfreetype6-dev libjpeg62-turbo-dev \
-            libmagickwand-dev libtidy-dev libc-client-dev libkrb5-dev \
-            libxslt1-dev" \
+            libmagickwand-dev libtidy-dev libkrb5-dev" \
         && apt-get install -y --no-install-recommends $PKG_DEPS \
         && wget -q http://libxl.com/download/libxl-lin-$XL_VERSION.tar.gz \
         && tar xfz libxl-lin-$XL_VERSION.tar.gz \
@@ -110,7 +110,16 @@ RUN apt-get update \
         && apt-get clean \
         && rm -rf /tmp/* /var/lib/apt/lists/*
 
-RUN mkdir -p /var/www/html /var/www/html/static /var/www/html/media
+RUN a2enmod rewrite remoteip \
+    && {\
+         echo RemoteIPHeader X-Real-IP ;\
+         echo RemoteIPTrustedProxy 10.0.0.0/8 ;\
+         echo RemoteIPTrustedProxy 172.16.0.0/12 ;\
+         echo RemoteIPTrustedProxy 192.168.0.0/16 ;\
+       } > /etc/apache2/conf-available/remoteip.conf \
+    && a2enconf remoteip
+
+RUN mkdir -p /var/www/html/static /var/www/html/media
 
 COPY php.ini /usr/local/etc/php/conf.d/99-setting.ini
 
