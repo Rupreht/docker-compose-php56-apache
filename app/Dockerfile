@@ -18,7 +18,9 @@ RUN apt-get update \
         libib-util \
         bzip2 \
         imagemagick \
-        libc-client-dev libxslt1-dev \
+        libxslt1.1 \
+        libc-client-dev \
+        libc-client2007e \
     && rm -rf /var/lib/apt/lists/*
 
 RUN apt-get update \
@@ -27,8 +29,9 @@ RUN apt-get update \
         && export PHP_EXCEL="master" \
         && export XDEBUG_VERSION="2.2.7" \
         && export XL_VERSION="3.6.5" \
-        && export PKG_DEPS="$PHPIZE_DEPS libxml2-dev libldap2-dev \
+        && export PKG_DEPS="$PHPIZE_DEPS libldap2-dev \
             libcurl4-nss-dev libgmp-dev libmhash-dev \
+            libxml2-dev libxslt1-dev \
             zlib1g-dev libssl-dev libssh2-1-dev firebird-dev \
             libbz2-dev libfreetype6-dev libjpeg62-turbo-dev \
             libmagickwand-dev libtidy-dev libkrb5-dev" \
@@ -128,6 +131,8 @@ COPY excel.ini /usr/local/etc/php/conf.d/99-excel.ini
 COPY phpinfo.php /var/www/html/phpinfo.php
 
 WORKDIR /var/www/html
+
+RUN php -m
 
 EXPOSE 80
 
