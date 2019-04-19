@@ -13,9 +13,10 @@ services:
       PRODUCTION: ${PRODUCTION:-Off}
       SITE_ID: ${SITE_ID:-1}
     volumes:
-      - application:/var/www/html
-      - static:/var/www/html/static
-      - media:/var/www/html/media
+      - application:/var/www/projects
+      - css:/var/www/projects/css
+      - js:/var/www/projects/js
+      - libs:/var/www/libs/card_modules/frame_baza
     networks:
       - frontend
       - backend
@@ -40,9 +41,9 @@ services:
       SSL_POLICY: ${SSL_POLICY:-Mozilla-Modern}
       TZ: ${TZ:-Asia/Yekaterinburg}
     volumes:
-      - application:/var/www/html:ro
-      - static:/var/www/html/static:ro
-      - media:/var/www/html/media:ro
+      - application:/var/www/projects:ro
+      - css:/var/www/projects/css;ro
+      - js:/var/www/projects/js:ro
     networks:
       - frontend
     logging:
@@ -61,5 +62,6 @@ networks:
 
 volumes:
   application: {}
-  static: {}
-  media: {}
+  css: {}
+  js: {}
+  libs: {}
