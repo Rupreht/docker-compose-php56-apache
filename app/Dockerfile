@@ -122,15 +122,13 @@ RUN a2enmod rewrite remoteip \
        } > /etc/apache2/conf-available/remoteip.conf \
     && a2enconf remoteip
 
-RUN mkdir -p /var/www/html/static /var/www/html/media
-
 COPY php.ini /usr/local/etc/php/conf.d/99-setting.ini
 
 COPY excel.ini /usr/local/etc/php/conf.d/99-excel.ini
 
-COPY phpinfo.php /var/www/html/index.php
+RUN mkdir /var/www/projects
 
-WORKDIR /var/www/html
+WORKDIR /var/www/projects
 
 EXPOSE 80
 
