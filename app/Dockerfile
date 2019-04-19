@@ -126,6 +126,8 @@ COPY php.ini /usr/local/etc/php/conf.d/99-setting.ini
 
 COPY excel.ini /usr/local/etc/php/conf.d/99-excel.ini
 
+COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
+
 RUN mkdir /var/www/projects
 
 WORKDIR /var/www/projects
