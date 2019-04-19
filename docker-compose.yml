@@ -44,6 +44,7 @@ services:
       - application:/var/www/projects:ro
       - css:/var/www/projects/css:ro
       - js:/var/www/projects/js:ro
+      - libs:/var/www/projects/libs:ro
     networks:
       - frontend
     logging:
