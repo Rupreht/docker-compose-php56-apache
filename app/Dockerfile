@@ -10,6 +10,8 @@ RUN apt-get update \
         wget \
         git \
         curl \
+        less \
+        vim-nox \
         libssh2-1 \
         libpng16-16 \
         libmcrypt-dev \
@@ -21,9 +23,6 @@ RUN apt-get update \
         libxslt1.1 \
         libc-client-dev \
         libc-client2007e \
-    && rm -rf /var/lib/apt/lists/*
-
-RUN apt-get update \
         && cd /tmp \
 #        && export PHP_EXCEL="Excel-1.0.2-PHP5" \
         && export PHP_EXCEL="master" \
@@ -127,6 +126,8 @@ COPY php.ini /usr/local/etc/php/conf.d/99-setting.ini
 COPY excel.ini /usr/local/etc/php/conf.d/99-excel.ini
 
 COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
+
+COPY mpm_prefork.conf /etc/apache2/mods-available/mpm_prefork.conf
 
 WORKDIR /var/www
 
